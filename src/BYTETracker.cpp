@@ -420,7 +420,12 @@ std::vector<std::vector<float> > byte_track::BYTETracker::calcIouDistance(const 
         std::vector<float> iou;
         for (size_t j = 0; j < ious[i].size(); j++)
         {
-            iou.push_back(1 - ious[i][j]);
+            // If the STracks are of different classes, they should never be matched
+            if(a_tracks[i]->getLabel() != b_tracks[j]->getLabel()) {
+                iou.push_back(1);
+            } else {
+                iou.push_back(1 - ious[i][j]);
+            }
         }
         cost_matrix.push_back(iou);
     }
