@@ -2,7 +2,7 @@
 
 #include <cstddef>
 
-byte_track::STrack::STrack(const Rect<float>& rect, const float& score) :
+byte_track::STrack::STrack(const Rect<float>& rect, const float& score, const int & label) :
     kalman_filter_(),
     mean_(),
     covariance_(),
@@ -10,6 +10,7 @@ byte_track::STrack::STrack(const Rect<float>& rect, const float& score) :
     state_(STrackState::New),
     is_activated_(false),
     score_(score),
+    label_(label),
     track_id_(0),
     frame_id_(0),
     start_frame_id_(0),
@@ -38,6 +39,11 @@ const bool& byte_track::STrack::isActivated() const
 const float& byte_track::STrack::getScore() const
 {
     return score_;
+}
+
+const int& byte_track::STrack::getLabel() const
+{
+    return label_;
 }
 
 const size_t& byte_track::STrack::getTrackId() const
