@@ -2,6 +2,7 @@
 
 #include <cstddef>
 #include <cmath>
+#include <algorithm>
 
 byte_track::STrack::STrack(const Rect<float>& rect, const float& score, const int & label) :
     kalman_filter_(),
@@ -49,7 +50,7 @@ const float byte_track::STrack::getLastSeenDistanceTo(const byte_track::STrack &
 
     float center_distance = sqrt(pow(center1_x - center2_x, 2) + pow(center1_y - center2_y, 2));
 
-    float minimal_side_size = min(min(this->getLastSeenPosition().width(), this->getLastSeenPosition().height()), min(target.getLastSeenPosition().width(), target.getLastSeenPosition().height()));
+    float minimal_side_size = std::min(std::min(this->getLastSeenPosition().width(), this->getLastSeenPosition().height()), std::min(target.getLastSeenPosition().width(), target.getLastSeenPosition().height()));
 
     return center_distance / minimal_side_size;
 }
