@@ -21,7 +21,8 @@ public:
                 const int& track_buffer = 30,
                 const float& track_thresh = 0.5,
                 const float& high_thresh = 0.6,
-                const float& match_thresh = 0.8);
+                const float& match_thresh = 0.8,
+                const float& maxLastSeenDistance = 2.0);
     ~BYTETracker();
 
     std::vector<STrackPtr> update(const std::vector<Object>& objects);
@@ -63,6 +64,7 @@ private:
     const float track_thresh_;
     const float high_thresh_;
     const float match_thresh_;
+    const float maxLastSeenDistance_;
     const size_t max_time_lost_;
 
     size_t frame_id_;

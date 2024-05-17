@@ -12,13 +12,15 @@ byte_track::BYTETracker::BYTETracker(const int& frame_rate,
                                      const int& track_buffer,
                                      const float& track_thresh,
                                      const float& high_thresh,
-                                     const float& match_thresh) :
+                                     const float& match_thresh
+                                     const float& maxLastSeenDistance) :
     track_thresh_(track_thresh),
     high_thresh_(high_thresh),
     match_thresh_(match_thresh),
     max_time_lost_(static_cast<size_t>(frame_rate / 30.0 * track_buffer)),
     frame_id_(0),
-    track_id_count_(0)
+    track_id_count_(0),
+    maxLastSeenDistance_(maxLastSeenDistance)
 {
 }
 
@@ -422,7 +424,7 @@ std::vector<std::vector<float> > byte_track::BYTETracker::calcIouDistance(const 
         {
             // If the STracks are of different classes, they should never be matched
             // And if the places they were really seen last are too far, they should also never be matched
-            if(a_tracks[i]->getLabel() != b_tracks[j]->getLabel() || a_tracks[i]->getLastSeenDistanceTo(*(b_tracks[j])) > 1) {
+            if(a_tracks[i]->getLabel() != b_tracks[j]->getLabel() || a_tracks[i]->getLastSeenDistanceTo(*(b_tracks[j])) > maxLastSeenDistance_) {
                 iou.push_back(1);
             } else {
                 iou.push_back(1 - ious[i][j]);
