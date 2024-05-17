@@ -425,7 +425,6 @@ std::vector<std::vector<float> > byte_track::BYTETracker::calcIouDistance(const 
             if(a_tracks[i]->getLabel() != b_tracks[j]->getLabel() || a_tracks[i]->getLastSeenDistanceTo(*(b_tracks[j])) > 1) {
                 iou.push_back(1);
             } else {
-                if()
                 iou.push_back(1 - ious[i][j]);
             }
         }

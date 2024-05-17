@@ -25,7 +25,7 @@ public:
 
     const Rect<float>& getLastSeenPosition() const;
     const void setLastSeenPosition(const Rect<float>& seenAtPosition);
-    const float getLastSeenDistance(const STrack & target) const;
+    const float getLastSeenDistanceTo(const byte_track::STrack & target) const;
 
     const bool& isActivated() const;
     const float& getScore() const;
