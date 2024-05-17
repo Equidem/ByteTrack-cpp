@@ -23,6 +23,10 @@ public:
     const Rect<float>& getRect() const;
     const STrackState& getSTrackState() const;
 
+    const Rect<float>& getLastSeenPosition() const;
+    const void setLastSeenPosition(const Rect<float>& seenAtPosition);
+    const float getLastSeenDistance(const STrack & target) const;
+
     const bool& isActivated() const;
     const float& getScore() const;
     const int& getLabel() const;
@@ -46,6 +50,7 @@ private:
     KalmanFilter::StateCov covariance_;
 
     Rect<float> rect_;
+    Rect<float> last_seen_position_;
     STrackState state_;
 
     bool is_activated_;

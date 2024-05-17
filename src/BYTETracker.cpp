@@ -421,9 +421,11 @@ std::vector<std::vector<float> > byte_track::BYTETracker::calcIouDistance(const 
         for (size_t j = 0; j < ious[i].size(); j++)
         {
             // If the STracks are of different classes, they should never be matched
-            if(a_tracks[i]->getLabel() != b_tracks[j]->getLabel()) {
+            // And if the places they were really seen last are too far, they should also never be matched
+            if(a_tracks[i]->getLabel() != b_tracks[j]->getLabel() || a_tracks[i]->getLastSeenDistanceTo(*(b_tracks[j])) > 1) {
                 iou.push_back(1);
             } else {
+                if()
                 iou.push_back(1 - ious[i][j]);
             }
         }

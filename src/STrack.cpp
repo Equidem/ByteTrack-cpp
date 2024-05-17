@@ -1,12 +1,14 @@
 #include "ByteTrack/STrack.h"
 
 #include <cstddef>
+#include <cmath>
 
 byte_track::STrack::STrack(const Rect<float>& rect, const float& score, const int & label) :
     kalman_filter_(),
     mean_(),
     covariance_(),
     rect_(rect),
+    last_seen_position_(rect),
     state_(STrackState::New),
     is_activated_(false),
     score_(score),
@@ -26,6 +28,32 @@ const byte_track::Rect<float>& byte_track::STrack::getRect() const
 {
     return rect_;
 }
+
+const byte_track::Rect<float>& byte_track::STrack::getLastSeenPosition() const
+{
+    return last_seen_position_;
+}
+
+void byte_track::STrack::setLastSeenPosition(const byte_track::Rect<float>& seenAtPosition)
+{
+    last_seen_position_ = seenAtPosition;
+}
+
+const float byte_track::STrack::getLastSeenDistanceTo(const byte_track::STrack & target) const
+{
+    float center1_x = this->getLastSeenPosition().x() + this->getLastSeenPosition().width() / 2;
+    float center1_y = this->getLastSeenPosition().y() + this->getLastSeenPosition().height() / 2;
+
+    float center2_x = target.getLastSeenPosition().x() + target.getLastSeenPosition().width() / 2;
+    float center2_y = target.getLastSeenPosition().y() + target.getLastSeenPosition().height() / 2;
+
+    float center_distance = sqrt(pow(center1_x - center2_x, 2) + pow(center1_y - center2_y, 2));
+
+    float minimal_side_size = min(min(this->getLastSeenPosition().width(), this->getLastSeenPosition().height()), min(target.getLastSeenPosition().width(), target.getLastSeenPosition().height()));
+
+    return center_distance / minimal_side_size;
+}
+
 
 const byte_track::STrackState& byte_track::STrack::getSTrackState() const
 {
@@ -98,6 +126,8 @@ void byte_track::STrack::reActivate(const STrack &new_track, const size_t &frame
     }
     frame_id_ = frame_id;
     tracklet_len_ = 0;
+
+    setLastSeenPosition(new_track.getRect());
 }
 
 void byte_track::STrack::predict()
@@ -120,6 +150,8 @@ void byte_track::STrack::update(const STrack &new_track, const size_t &frame_id)
     score_ = new_track.getScore();
     frame_id_ = frame_id;
     tracklet_len_++;
+
+    setLastSeenPosition(new_track.getRect());
 }
 
 void byte_track::STrack::markAsLost()
