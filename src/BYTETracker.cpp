@@ -12,7 +12,7 @@ byte_track::BYTETracker::BYTETracker(const int& frame_rate,
                                      const int& track_buffer,
                                      const float& track_thresh,
                                      const float& high_thresh,
-                                     const float& match_thresh
+                                     const float& match_thresh,
                                      const float& maxLastSeenDistance) :
     track_thresh_(track_thresh),
     high_thresh_(high_thresh),
